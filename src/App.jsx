@@ -288,7 +288,7 @@ const App = () => {
               key={i}
               onClick={() => {
                 setMethod(ep.method);
-                setUrl(`http://localhost:3000${ep.url}`);
+                setUrl(`https://api-df69.onrender.com${ep.url}`);
                 setHeaders(ep.headers);
                 setBody(ep.body);
               }}
