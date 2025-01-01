@@ -9,6 +9,19 @@ const App = () => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [selectedEndpoint, setSelectedEndpoint] = useState(null);
+
+  const generateCurlCommand = () => {
+    const parsedHeaders = headers ? JSON.parse(headers) : {};
+    const headerString = Object.entries(parsedHeaders)
+      .map(([key, value]) => `-H "${key}: ${value}"`)
+      .join(" ");
+    const bodyString =
+      ["POST", "PUT", "PATCH"].includes(method) && body
+        ? `-d '${body}'`
+        : "";
+    return `curl -X ${method} ${headerString} ${bodyString} "${url}"`;
+  };
 
   const handleApiCall = async () => {
     setLoading(true);
@@ -34,6 +47,7 @@ const App = () => {
       setLoading(false);
     }
   };
+
 
   const endpoints = [
     {
@@ -123,7 +137,7 @@ const App = () => {
           body: "{}",
         },
         {
-          method: "POST",
+          method: "PUT",
           url: "/admin/ApproveOrRejectBusDetails/{id}/{busNo}/{status}",
           description: "Approve/Reject Bus Details",
           headers: "{}",
@@ -288,14 +302,18 @@ const App = () => {
               key={i}
               onClick={() => {
                 setMethod(ep.method);
-                setUrl(`https://api-df69.onrender.com${ep.url}`);
+                setUrl(`http://localhost:3000${ep.url}`);
                 setHeaders(ep.headers);
                 setBody(ep.body);
+                setSelectedEndpoint(`${category.category}-${i}`);
               }}
               style={{
                 margin: "5px",
                 padding: "10px",
-                backgroundColor: "#007BFF",
+                backgroundColor:
+                  selectedEndpoint === `${category.category}-${i}`
+                    ? "#0056b3"
+                    : "#007BFF",
                 color: "white",
                 border: "none",
                 cursor: "pointer",
@@ -351,6 +369,12 @@ const App = () => {
       </button>
 
       {loading && <p>Loading...</p>}
+      <div style={{ marginTop: "20px" }}>
+        <h2>Generated cURL Command:</h2>
+        <pre style={{ backgroundColor: "#f4f4f4", padding: "10px" }}>
+          {generateCurlCommand()}
+        </pre>
+      </div>
       {response && (
         <div style={{ marginTop: "20px" }}>
           <h2>Response:</h2>
