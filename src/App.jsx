@@ -248,11 +248,15 @@ const App = () => {
       category: "Commuter Routes",
       endpoints: [
         {
-          method: "GET",
+          method: "POST",
           url: "/commutor/searchBusses",
           description: "Search Busses",
           headers: "{}",
-          body: "{}",
+          body: `{
+              "date": "2025-01-21",
+              "startFrom": "Colombo",
+              "endFrom": "Kandy"
+          }`,
         },
         {
           method: "POST",
@@ -302,7 +306,7 @@ const App = () => {
               key={i}
               onClick={() => {
                 setMethod(ep.method);
-                setUrl(`https://api-df69.onrender.com${ep.url}`);
+                setUrl(`http://localhost:3000${ep.url}`);
                 setHeaders(ep.headers);
                 setBody(ep.body);
                 setSelectedEndpoint(`${category.category}-${i}`);
