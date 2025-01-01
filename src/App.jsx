@@ -116,7 +116,7 @@ const App = () => {
           body: "{}",
         },
         {
-          method: "POST",
+          method: "PUT",
           url: "/admin/ApproveOrRejectBusOperator/{id}/{status}",
           description: "Approve/Reject Bus Operator",
           headers: "{}",
